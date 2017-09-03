@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+    <!-- TODO aggiungere un pulsante per eliminare tutti gli ingredienti aggiunti? -->
+
+    <RelativeLayout
+        android:id="@+id/ingr_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="8dp">
+            <LinearLayout
+                android:id="@+id/back_to_filters_incl_ingr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/dark_green"
+                android:gravity="center_vertical"
+                android:paddingLeft="2dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_new_left_arrow"/>
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="7dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:text="@string/all_filter"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <com.example.erica.cookingtime.Utils.MyTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:padding="15dp"
+                android:text="@string/incl_ingr_text" />
+
+            <com.example.erica.cookingtime.Utils.MyTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/incl_ingred"
+                android:background="@color/light_grey"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="15dp"
+                android:textColor="@color/super_dark_grey"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-condensed"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/incl_ingr_rec_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+
+
+        </LinearLayout>
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:menu_colorNormal="@color/orange"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="end|bottom">
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/add_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/orange"
+                android:src="@drawable/ic_add_small"
+                fab:fab_label="@string/add_new_ingr" />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/add_from_fridge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/orange"
+                fab:fab_label="@string/add_from_fridge"
+                android:src="@drawable/fridge_white"/>
+        </com.github.clans.fab.FloatingActionMenu>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/fridge_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fridge_rec_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/add_ingredients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/orange"
+            android:src="@drawable/ic_checked"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="end|bottom"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

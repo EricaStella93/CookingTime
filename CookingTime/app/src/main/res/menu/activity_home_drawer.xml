@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/home_menu"
+            android:icon="@drawable/ic_home_grey"
+            android:title="@string/home"
+            />
+        <item
+            android:id="@+id/shop_list_menu"
+            android:icon="@drawable/ic_shopping_list_grey"
+            android:title="@string/action_shopping_list"/>
+        <item
+            android:id="@+id/search_menu"
+            android:icon="@drawable/ic_search_grey"
+            android:title="@string/action_search" />
+        <item
+            android:id="@+id/favs_menu"
+            android:icon="@drawable/ic_favs_full_grey"
+            android:title="@string/action_favs"/>
+        <item
+            android:id="@+id/fridge_menu"
+            android:icon="@drawable/ic_fridge_grey"
+            android:title="@string/action_fridge"/>
+        <item
+            android:id="@+id/diet_pref_menu"
+            android:icon="@drawable/ic_diet_grey"
+            android:title="@string/action_diet_pref"/>
+    </group>
+
+</menu>

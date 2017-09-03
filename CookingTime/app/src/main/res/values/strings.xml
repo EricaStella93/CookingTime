@@ -1,0 +1,100 @@
+<resources>
+    <!-- Activity labels -->
+    <string name="app_name">Cooking Time</string>
+    <string name="shopping_list_label">Shopping List</string>
+    <string name="fridge_label">Fridge</string>
+    <string name="favs_label">Favourites</string>
+    <string name="dietary_prefs_label">Dietary Preferences</string>
+    <string name="search_label">Search</string>
+    <string name="empty_label">""</string>
+
+    <!-- date settings -->
+    <string name="date_format">dd.MM.yyyy</string>
+
+    <!-- Navigation Drawer -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Menu laterale -->
+    <string name="menu">Menu</string>
+    <string name="home">Home</string>
+    <string name="action_shopping_list">Shopping List</string>
+    <string name="action_search">Search</string>
+    <string name="action_favs">Favourites</string>
+    <string name="action_fridge">Fridge</string>
+    <string name="action_diet_pref">Dietary Preferences</string>
+
+    <!-- pulsanti fridge e shopping list -->
+    <string name="email_list">Email List</string>
+    <string name="clear_all">Clear All</string>
+
+    <!-- FRIDGE strings -->
+    <string name="aisles">AISLES</string>
+    <string name="date">DATE</string>
+
+    <!-- fridge clear all dialog -->
+    <string name="fridge_clear_dialog_first_string">Are you sure you want to clear your fridge?</string>
+    <string name="fridge_clear_dialog_second_string">Clearing will remove all items from your fridge</string>
+    <string name="clear_got_it_text">Are you sure you want to clear all your checked items?</string>
+    <string name="clear_list">Clear List</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- fridge add ingredient dialog -->
+    <string name="input_name">Name</string>
+    <string name="input_quantity">Quantity</string>
+    <string name="aisle">Aisle</string>
+    <string name="best_before">Best Before</string>
+    <string name="add_ing">Add</string>
+    <string name="name_error">Name is required</string>
+
+    <!-- SHOPPING LIST strings -->
+    <string name="recipes">RECIPES</string>
+    <string name="got_it">GOT IT</string>
+    <string name="clear">CLEAR</string>
+    <string name="not_in_recipe">NOT IN A RECIPE</string>
+    <string name="quantity_error">Quantity is required</string>
+
+    <!-- shopping list clear all dialog -->
+    <string name="shopping_list_clear_dialog_first_string">Are you sure you want to clear your shopping list?</string>
+    <string name="shopping_list_clear_dialog_second_string">Clearing will remove all items from your shopping list</string>
+
+    <!-- DIETARY PREFS strings -->
+    <string name="initial_sentence">The dietary preferences you set will influence your recipe recommendations and search results. You can toggle these preferences on/off within search filters for a specific search.</string>
+    <string name="disliked_ingredients">Disliked Ingredients</string>
+    <string name="add_disl_ing">Add Disliked Ingredient</string>
+    <string name="diets">Diets</string>
+    <string name="allergies">Allergies</string>
+
+    <!-- RECIPES -->
+    <string name="rating">Rating</string>
+    <string name="instructions">Ingredients</string>
+    <string name="minutes">Minutes</string>
+    <string name="share">Share</string>
+    <string name="add_all_to_shop_list">ADD ALL TO SHOPPING LIST</string>
+    <string name="remove_all_from_shop_list">REMOVE ALL FROM SHOPPING LIST</string>
+    <string name="added_ing">Ingredient added to shopping list</string>
+    <string name="removed_ing">Ingredient removed from shopping list</string>
+
+    <!-- FILTERS -->
+    <string name="filters">Filters</string>
+    <string name="prep_time">Preparation Time</string>
+    <string name="cuisines">Cuisines</string>
+    <string name="courses">Courses</string>
+    <string name="incl_ingred">Included Ingredients</string>
+    <string name="reset_filter">Reset Filters</string>
+    <string name="all_filter">All Filters</string>
+    <string name="edit_pref">Edit Preferences</string>
+    <string name="reset_cuisine">Reset Cuisines</string>
+    <string name="reset_courses">Reset Courses</string>
+
+    <string name="add_new_ingr">Add new ingredient</string>
+    <string name="add_from_fridge">Add from fridge</string>
+
+    <string name="reset">Reset</string>
+
+    <string name="reset_cuisine_text">Are you sure you want to reset all your Cuisines filters?</string>
+    <string name="reset_courses_text">Are you sure you want to reset all your Courses filters?</string>
+    <string name="incl_ingr_text">Including instructions allows to search for recipes that contain the specified instructions.</string>
+    <string name="reset_all_filter_first">Are you sure you want to reset your filters?</string>
+    <string name="reset_all_filter_second">Resetting will clear all filter settings. Your dietary preferences will remain active</string>
+</resources>

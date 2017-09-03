@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="udm_array">
+        <item>g</item>
+        <item>ml</item>
+        <item>l</item>
+        <item>Kg</item>
+        <item>lb</item>
+        <item>tsp</item>
+        <item>Tbsp</item>
+        <item>oz</item>
+        <item>fl oz</item>
+        <item>cup</item>
+        <item>pt</item>
+        <item>qt</item>
+        <item>gal</item>
+    </string-array>
+</resources>

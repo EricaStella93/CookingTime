@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <ImageButton
+        android:id="@+id/shopping_list_exit_clear_all_dialog"
+        android:layout_width="37dp"
+        android:layout_height="33dp"
+        android:layout_gravity="right"
+        android:backgroundTint="@color/white"
+        app:srcCompat="@drawable/ic_cross" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.06"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center_vertical|center_horizontal"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="@string/shopping_list_clear_dialog_first_string"
+        android:textAlignment="center"
+        android:textColor="@color/super_dark_grey"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.04"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center_horizontal"
+        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:text="@string/shopping_list_clear_dialog_second_string"
+        android:textColor="@color/super_dark_grey" />
+
+    <Button
+        android:id="@+id/clear_all_shopping_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_green"
+        android:fontFamily="sans-serif-thin"
+        android:text="@string/clear_list"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="22sp" />
+
+    <Button
+        android:id="@+id/dismiss_clear_all_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/dark_green"
+        android:fontFamily="sans-serif-thin"
+        android:text="@string/cancel"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="22sp" />
+</LinearLayout>

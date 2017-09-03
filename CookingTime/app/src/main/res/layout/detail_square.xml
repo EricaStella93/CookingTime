@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/root_layout">
+
+    <!--   <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:orientation="vertical"
+           android:visibility="gone">
+
+           <ImageButton
+               android:layout_width="match_parent"
+               android:layout_height="0dp"
+               android:layout_weight="1"/>
+
+           <ImageButton
+               android:layout_width="match_parent"
+               android:layout_height="0dp"
+               android:layout_weight="1"/>
+
+       </LinearLayout>-->
+    <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <com.example.erica.cookingtime.Utils.MyTextView
+            android:id="@+id/recipe_name_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <com.example.erica.cookingtime.Utils.MyTextView
+            android:id="@+id/ing_name_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <CheckBox
+            android:id="@+id/got_it_box"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="aisle_array">
+        <item>No Aisle</item>
+        <item>Alcoholic Beverages</item>
+        <item>Bakery/Bread</item>
+        <item>Baking</item>
+        <item>Beverages</item>
+        <item>Canned and Jarred</item>
+        <item>Cereal</item>
+        <item>Cheese</item>
+        <item>Condiments</item>
+        <item>Dried Fruits</item>
+        <item>Ethnic Foods</item>
+        <item>Frozen</item>
+        <item>Gluten Free</item>
+        <item>Gourmet</item>
+        <item>Grilling Supplies</item>
+        <item>Health Foods</item>
+        <item>Meat</item>
+        <item>Milk, Eggs, Other Dairy</item>
+        <item>Not in Grocery Store/Homemade</item>
+        <item>Nut butters, Jams, and Honey</item>
+        <item>Nuts</item>
+        <item>Oil, Vinegar, Salad Dressing</item>
+        <item>Online</item>
+        <item>Pasta and Rice</item>
+        <item>Produce</item>
+        <item>Refrigerated</item>
+        <item>Savory Snacks</item>
+        <item>Seafood</item>
+        <item>Spices and Seasonings</item>
+        <item>Sweet Snacks</item>
+        <item>Tea and Coffee</item>
+    </string-array>
+</resources>

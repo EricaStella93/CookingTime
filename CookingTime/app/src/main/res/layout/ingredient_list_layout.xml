@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="2dp">
+
+            <Button
+                android:id="@+id/add_all_to_shop_list"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/ic_plus_empty"
+                android:drawablePadding="5dp"
+                android:padding="6dp"
+                android:text="@string/add_all_to_shop_list" />
+
+            <Button
+                android:id="@+id/remove_all_from_shop_list"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/ic_minus"
+                android:drawablePadding="5dp"
+                android:padding="6dp"
+                android:text="@string/remove_all_from_shop_list" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <View
+                android:layout_width="4px"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/super_dark_grey"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp">
+
+            </View>
+
+            <ImageButton
+                android:id="@+id/go_to_shop_list"
+                android:layout_width="37dp"
+                android:layout_height="46dp"
+                android:layout_margin="5dp"
+                android:layout_weight="0.05"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_shopping_list" />
+
+            <View
+                android:layout_width="4px"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/super_dark_grey"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp">
+
+            </View>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <com.example.erica.cookingtime.Utils.MyTextView
+                    android:id="@+id/myTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:gravity="center_vertical"
+                    android:text="3"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <com.example.erica.cookingtime.Utils.MyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:gravity="center_vertical"
+                    android:text="servings"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_grey"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/ingredients_rec_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>
