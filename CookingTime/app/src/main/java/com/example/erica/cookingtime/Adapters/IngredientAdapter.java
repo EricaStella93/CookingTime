@@ -28,7 +28,6 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-//TODO controllare perchè non cambiano i pulsanti aggiungendoli tutti
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder>{
 
     private ArrayList<ExtendedIngredient> ingredients;

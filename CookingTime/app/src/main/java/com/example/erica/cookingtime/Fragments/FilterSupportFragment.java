@@ -140,6 +140,20 @@ public class FilterSupportFragment extends Fragment{
 
     }
 
+    public void addFav(String id){
+        if(favList != null){
+            favList.add(id);
+        }
+    }
+
+    public void removeFav(String id){
+
+        if(favList != null){
+            favList.remove(id);
+        }
+
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

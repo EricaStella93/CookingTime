@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.erica.cookingtime.DataBase.DBModifiers.RemoveDislIng;
@@ -45,11 +46,13 @@ public class FridgeContentAdapter extends RecyclerView.Adapter<FridgeContentAdap
         // each data item is just a string in this case
         public CheckBox button;
         public TextView ingName;
+        public LinearLayout wrapper;
 
         public ViewHolder(View v) {
             super(v);
             button = (CheckBox) v.findViewById(R.id.add_box);
             ingName = (TextView) v.findViewById(R.id.name);
+            wrapper = (LinearLayout) v.findViewById(R.id.wrapper);
         }
     }
 
@@ -70,6 +73,13 @@ public class FridgeContentAdapter extends RecyclerView.Adapter<FridgeContentAdap
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final FridgeIngredient ing = ingredients.get(position);
+
+        if(position % 2 == 0){
+            holder.wrapper.setBackgroundColor(holder.wrapper.getContext().getResources().getColor(R.color.lighter_grey));
+        }else{
+            holder.wrapper.setBackgroundColor(holder.wrapper.getContext().getResources().getColor(R.color.light_grey));
+        }
+
         holder.ingName.setText(ing.getName());
         if(chosenIngredients.contains(ing)){
             holder.button.setChecked(true);

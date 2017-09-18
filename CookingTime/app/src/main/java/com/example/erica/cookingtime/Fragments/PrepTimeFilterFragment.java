@@ -80,7 +80,7 @@ public class PrepTimeFilterFragment extends Fragment{
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                sharedPref.edit().putInt(ConstantsDictionary.SHARED_PREP_TIME_PROGRESS, seekBar.getProgress()).apply();
             }
         });
 

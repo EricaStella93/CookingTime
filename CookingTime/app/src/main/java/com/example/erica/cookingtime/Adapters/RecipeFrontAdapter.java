@@ -23,11 +23,13 @@ public class RecipeFrontAdapter extends RecyclerView.Adapter<RecipeFrontAdapter.
     private ArrayList<Match> recipes;
     private RecipeListFragment fragment;
     private ArrayList<String> favouritesList;
+    private OnChangeFavs mListener;
 
-    public RecipeFrontAdapter(ArrayList<Match> list, RecipeListFragment fragment, ArrayList<String> favouritesList){
+    public RecipeFrontAdapter(ArrayList<Match> list, RecipeListFragment fragment, ArrayList<String> favouritesList, OnChangeFavs mListener){
         recipes = list;
         this.fragment = fragment;
         this.favouritesList = favouritesList;
+        this.mListener = mListener;
     }
 
     public void add(int position, Match item) {
@@ -117,6 +119,7 @@ public class RecipeFrontAdapter extends RecyclerView.Adapter<RecipeFrontAdapter.
                     if(favouritesList.contains(match.getId())){
                         FavsModifier task = new FavsModifier(ConstantsDictionary.REMOVE, match.getId(), null);
                         task.execute(view.getContext());
+                        mListener.removeFav(match.getId());
                         favouritesList.remove(match.getId());
                         holder.favButton.setBackground(
                                 holder.favButton.getContext().getResources()
@@ -126,6 +129,7 @@ public class RecipeFrontAdapter extends RecyclerView.Adapter<RecipeFrontAdapter.
                     else{
                         FavsModifier task = new FavsModifier(ConstantsDictionary.ADD, match.getId(), match);
                         task.execute(view.getContext());
+                        mListener.addFav(match.getId());
                         favouritesList.add(match.getId());
                         holder.favButton.setBackground(
                                 holder.favButton.getContext().getResources()
@@ -168,6 +172,11 @@ public class RecipeFrontAdapter extends RecyclerView.Adapter<RecipeFrontAdapter.
     public void addFavs(ArrayList<String> favouritesList){
         this.favouritesList = favouritesList;
         notifyDataSetChanged();
+    }
+
+    public interface OnChangeFavs{
+        void addFav(String id);
+        void removeFav(String id);
     }
 }
 

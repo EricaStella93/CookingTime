@@ -12,9 +12,10 @@
         android:orientation="horizontal">
 
         <FrameLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:paddingLeft="2dp">
+            android:paddingLeft="2dp"
+            android:layout_weight="4">
 
             <Button
                 android:id="@+id/add_all_to_shop_list"
@@ -24,7 +25,8 @@
                 android:drawableLeft="@drawable/ic_plus_empty"
                 android:drawablePadding="5dp"
                 android:padding="6dp"
-                android:text="@string/add_all_to_shop_list" />
+                android:text="@string/add_all_to_shop_list"
+                android:textSize="13sp" />
 
             <Button
                 android:id="@+id/remove_all_from_shop_list"
@@ -34,24 +36,24 @@
                 android:drawableLeft="@drawable/ic_minus"
                 android:drawablePadding="5dp"
                 android:padding="6dp"
-                android:text="@string/remove_all_from_shop_list" />
+                android:text="@string/remove_all_from_shop_list"
+                android:textSize="13sp" />
         </FrameLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="right"
             android:orientation="horizontal"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:layout_weight="2">
 
             <View
                 android:layout_width="4px"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:background="@color/super_dark_grey"
-                android:paddingBottom="3dp"
-                android:paddingTop="3dp">
+                android:background="@color/super_dark_grey">
 
             </View>
 
@@ -70,9 +72,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                android:background="@color/super_dark_grey"
-                android:paddingBottom="3dp"
-                android:paddingTop="3dp">
+                android:background="@color/super_dark_grey">
 
             </View>
 

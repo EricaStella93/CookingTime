@@ -2,8 +2,10 @@ package com.example.erica.cookingtime.Fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,6 +28,8 @@ public class CourseFilterFragment extends Fragment {
     private ArrayList<Course> courses;
 
     private RecyclerView coursesRecView;
+
+    private View dualPane;
 
     private OnCloseFilterFragment mListener;
 
@@ -76,6 +80,7 @@ public class CourseFilterFragment extends Fragment {
         });
 
         coursesRecView = (RecyclerView) layout.findViewById(R.id.courses_rec_view);
+        dualPane = layout.findViewById(R.id.stub_second);
         if(courses != null){
             setCoursesRecView();
         }
@@ -83,7 +88,16 @@ public class CourseFilterFragment extends Fragment {
     }
 
     private void setCoursesRecView(){
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(coursesRecView.getContext());
+        RecyclerView.LayoutManager layoutManager;
+        if(dualPane == null){
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                layoutManager = new GridLayoutManager(coursesRecView.getContext(), 4);
+            }else{
+                layoutManager = new GridLayoutManager(coursesRecView.getContext(), 2);
+            }
+        }else{
+            layoutManager = new GridLayoutManager(coursesRecView.getContext(), 2);
+        }
         coursesRecView.setLayoutManager(layoutManager);
         CourseAdapter adapter = new CourseAdapter(courses);
         coursesRecView.setAdapter(adapter);

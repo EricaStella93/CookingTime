@@ -10,7 +10,6 @@
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingBottom="5dp"
-        android:paddingLeft="15dp"
         android:paddingTop="5dp">
 
         <TextView
@@ -24,7 +23,8 @@
             android:textColor="@color/medium_grey"
             android:textSize="10sp"
             android:textStyle="bold"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:paddingLeft="15dp"/>
 
         <TextView
             android:id="@+id/ing_name"
@@ -34,14 +34,20 @@
             android:gravity="center_vertical"
             android:text="blablabla"
             android:textColor="@color/grey_dark"
-            android:textSize="23sp" />
+            android:textSize="23sp"
+            android:paddingLeft="15dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_grey"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/super_dark_grey"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:paddingBottom="20dp"
         android:paddingLeft="15dp"
@@ -52,8 +58,7 @@
             android:id="@+id/input_layout_ing_quantity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:textColorHint="@color/white">
+            android:layout_weight="3">
 
             <EditText
                 android:id="@+id/input_ing_quantity"
@@ -62,7 +67,6 @@
                 android:backgroundTint="@color/white"
                 android:hint="@string/input_quantity"
                 android:inputType="numberDecimal"
-                android:textColor="@color/white"
                 />
 
         </android.support.design.widget.TextInputLayout>
@@ -72,8 +76,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white" />
+            android:layout_weight="2" />
 
     </LinearLayout>
 
@@ -89,9 +92,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SAVE"
+            android:fontFamily="sans-serif-thin"
+            android:text="@string/save"
             android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:textSize="22sp" />
     </LinearLayout>
 
 </LinearLayout>

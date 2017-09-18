@@ -12,7 +12,7 @@ public class ConstantsDictionary {
     public static final String SEARCH_QUERY = "search_query";
     public static final String SUPPORT_FRAGMENT = "support_fragment";
 
-    public static final int RECIPE_NUM = 3;
+    public static final int RECIPE_NUM = 20;
 
     public static final int ADD = 0;
     public static final int REMOVE = 1;

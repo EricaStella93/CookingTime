@@ -32,12 +32,12 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="7dp"
                     android:fontFamily="sans-serif-thin"
-                    android:padding="15dp"
                     android:text="@string/all_filter"
                     android:textColor="@color/white"
                     android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"/>
             </LinearLayout>
 
             <com.example.erica.cookingtime.Utils.MyTextView

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -25,6 +26,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.erica.cookingtime.Adapters.RecipeFrontAdapter;
 import com.example.erica.cookingtime.Fragments.FavsRecipeListFragment;
 import com.example.erica.cookingtime.Fragments.OnFragmentInteractionListener;
 import com.example.erica.cookingtime.Fragments.RecipeListFragment;
@@ -41,11 +43,14 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
+
 public class FavouritesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         OnFragmentInteractionListener,
         SupportFavsFragment.ActivityCoordinator,
-        SingleRecipeFragment.SingleRecipeListener{
+        SingleRecipeFragment.SingleRecipeListener, RecipeFrontAdapter.OnChangeFavs{
 
     private final String STATE_QUERY = "state_query";
 
@@ -63,6 +68,7 @@ public class FavouritesActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_favs);
 
         setupToolBar();
@@ -125,7 +131,11 @@ public class FavouritesActivity extends AppCompatActivity
 
         //schermo grande
         if(mDualePane){
-            recipeListFragment = FavsRecipeListFragment.newInstance(4, supportFragment.getInitialQuery());
+            int columns = 3;
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                columns = 4;
+            }
+            recipeListFragment = FavsRecipeListFragment.newInstance(columns, supportFragment.getInitialQuery());
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.recipe_fragment_container, recipeListFragment);
@@ -157,8 +167,12 @@ public class FavouritesActivity extends AppCompatActivity
 
         //schermo grande e ricetta aperta
         if(mDualePane){
-
-            recipeListFragment = FavsRecipeListFragment.newInstance(2, supportFragment.getInitialQuery());
+            int columns = 1;
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                columns = 2;
+            }
+            findViewById(R.id.single_recipe_fragment_frame).setVisibility(View.VISIBLE);
+            recipeListFragment = FavsRecipeListFragment.newInstance(columns, supportFragment.getInitialQuery());
             singleRecipeFragment = SingleRecipeFragment.newInstance(false);
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -251,12 +265,11 @@ public class FavouritesActivity extends AppCompatActivity
             startActivity(intent);
             return true;
         }
-        if(id == R.id.share_recipe){
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, supportFragment.getSelectedRecipe().getDetailedRecipe().sourceUrl);
+        if(id == R.id.action_share_recipe){
+            Intent sendIntent = new Intent(android.content.Intent.ACTION_SEND);
             sendIntent.setType("text/plain");
-            startActivity(sendIntent);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, supportFragment.getSelectedRecipe().getDetailedRecipe().sourceUrl);
+            startActivity(Intent.createChooser(sendIntent, getResources().getString(R.string.share_using)));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -268,77 +281,14 @@ public class FavouritesActivity extends AppCompatActivity
         return MenuUtils.menuNavigation(item, this);
     }
 
-    private void configureSearchView(final Menu menu){
-        final MenuItem search = menu.findItem(R.id.search);
-
-
-        //per togliere l'overflow menu quando si apre la search view
-        MenuItemCompat.setOnActionExpandListener(search, new MenuItemCompat.OnActionExpandListener(){
-            @Override
-            public boolean onMenuItemActionExpand(final MenuItem item) {
-                //MenuItem shopList = menu.findItem(R.id.action_shopping_list);
-                //to give focus to the search view when it is expanded
-                sv.setIconified(false);
-                sv.requestFocusFromTouch();
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(final MenuItem item) {
-                //MenuItem shopList = menu.findItem(R.id.action_shopping_list);
-                //to hide the keyboard when back button is pressed
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(sv.getWindowToken(), 0);
-                return true;
-            }
-        });
-
-        sv = (SearchView) search.getActionView();
-
-        sv.setFocusable(true);
-        sv.setFocusableInTouchMode(true);
-
-        //style cursor and other things of the search view
-        SearchViewStyle.on(sv)
-                .setCursorColor(getResources().getColor(R.color.light_green))
-                .setTextColor(getResources().getColor(R.color.medium_grey))
-                .setCloseBtnImageResource(R.drawable.ic_close);
-
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
-            @Override
-            public boolean onQueryTextSubmit(String query){
-                //TODO
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText){
-                //TODO
-                return true;
-            }
-        });
-        sv.setOnCloseListener(new SearchView.OnCloseListener(){
-            @Override
-            public boolean onClose(){
-                return true;
-            }
-        });
-        sv.setSubmitButtonEnabled(false);
-        sv.setIconifiedByDefault(true);
-
-        if(initialQuery != null){
-            sv.setIconified(false);
-            search.expandActionView();
-            sv.setQuery(initialQuery,true);
-        }
-    }
-
     @Override
     public void onSaveInstanceState(Bundle state){
         super.onSaveInstanceState(state);
         if(sv != null){
             if(!sv.isIconified()) {
-                state.putCharSequence(STATE_QUERY, sv.getQuery());
+                if(!sv.getQuery().toString().trim().equals("")){
+                    state.putCharSequence(STATE_QUERY, sv.getQuery());
+                }
             }
         }
     }
@@ -413,8 +363,13 @@ public class FavouritesActivity extends AppCompatActivity
 
         //schermo grande
         if(mDualePane){
+            findViewById(R.id.single_recipe_fragment_frame).setVisibility(View.VISIBLE);
             singleRecipeFragment = SingleRecipeFragment.newInstance(false);
-            recipeListFragment.changeGridColumns(2, this);
+            int columns = 1;
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                columns = 2;
+            }
+            recipeListFragment.changeGridColumns(columns, this);
             fragmentTransaction.replace(R.id.single_recipe_fragment_frame, singleRecipeFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
@@ -449,9 +404,14 @@ public class FavouritesActivity extends AppCompatActivity
 
         //schermo grande
         if(mDualePane){
-            recipeListFragment.changeGridColumns(4, this);
+            int columns = 3;
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                columns = 4;
+            }
+            recipeListFragment.changeGridColumns(columns, this);
             fragmentTransaction.remove(singleRecipeFragment);
             fragmentTransaction.commit();
+            findViewById(R.id.single_recipe_fragment_frame).setVisibility(View.GONE);
             supportFragment.removeSelectedRecipe();
         }else{
             fragmentManager.popBackStack();
@@ -533,7 +493,7 @@ public class FavouritesActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_collaps);
         setSupportActionBar(toolbar);
-        setTitle(recipe.getRecipeName());
+        ((CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar)).setTitle(recipe.getRecipeName());
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(getResources().getDrawable(R.drawable.ic_left_arrow_white));
@@ -564,5 +524,15 @@ public class FavouritesActivity extends AppCompatActivity
 
         setupToolBar();
 
+    }
+
+    @Override
+    public void addFav(String id) {
+        supportFragment.addFav(id);
+    }
+
+    @Override
+    public void removeFav(String id) {
+        supportFragment.removeFav(id);
     }
 }

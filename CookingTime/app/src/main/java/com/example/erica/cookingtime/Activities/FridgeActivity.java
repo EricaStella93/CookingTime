@@ -49,6 +49,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
+
 public class FridgeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ClearAllFridgeDialog.ClearAllDialogListener,
@@ -75,6 +78,7 @@ public class FridgeActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
 
         if(ingredientList.isEmpty() && task == null){
             this.task = new RetrieveIngredientsFromDBTask();
@@ -114,6 +118,7 @@ public class FridgeActivity extends AppCompatActivity
         //foto sopra al menù laterale
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().findItem(R.id.fridge_menu).setChecked(true);
 
         //faccio partire gli ingredienti ordinati per aisle
         if(savedInstanceState != null){
@@ -136,6 +141,14 @@ public class FridgeActivity extends AppCompatActivity
             mDualPane = true;
         }else{
             mDualPane = false;
+        }
+
+        horizontalToolbar(toolbar);
+    }
+
+    private void horizontalToolbar(Toolbar toolbar){
+        if(!mDualPane && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            toolbar.setTitleTextColor(getResources().getColor(R.color.orange));
         }
     }
 
@@ -160,6 +173,9 @@ public class FridgeActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.fridge, menu);
+        if(!mDualPane && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            ((Toolbar) findViewById(R.id.toolbar)).setOverflowIcon(getResources().getDrawable(R.drawable.ic_overflow_dark));
+        }
         return true;
     }
 
@@ -345,7 +361,9 @@ public class FridgeActivity extends AppCompatActivity
 
     private void clearAllFridge(){
         ingredientList.clear();
-        listParent.removeAllViews();
+        if(listParent.getAdapter()!= null){
+            ((FridgeSectionAdapter) listParent.getAdapter()).removeAll();
+        }
         ModifyFridge task = new ModifyFridge(ConstantsDictionary.ALL, 0);
         task.execute(this);
     }

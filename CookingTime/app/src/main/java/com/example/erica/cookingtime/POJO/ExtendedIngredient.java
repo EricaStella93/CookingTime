@@ -10,9 +10,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class ExtendedIngredient implements Parcelable {
 
-    @SerializedName("id")
-    @Expose
-    public Integer id;
     @SerializedName("aisle")
     @Expose
     public String aisle;
@@ -46,7 +43,6 @@ public class ExtendedIngredient implements Parcelable {
     }
 
     public ExtendedIngredient(Parcel in){
-        this.id = in.readInt();
         this.aisle = in.readString();
         this.image = in.readString();
         this.name = in.readString();
@@ -60,7 +56,6 @@ public class ExtendedIngredient implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(this.id);
         parcel.writeString(this.aisle);
         parcel.writeString(this.image);
         parcel.writeString(this.name);
@@ -90,9 +85,6 @@ public class ExtendedIngredient implements Parcelable {
         this.dbId = dbId;
     }
 
-    public Integer getId() {
-        return id;
-    }
 
     public String getAisle() {
         return aisle;

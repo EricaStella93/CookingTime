@@ -46,6 +46,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
+
 public class ShoppingListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ClearAllShoppingListDialog.ClearAllDialogListener,
@@ -78,6 +81,8 @@ public class ShoppingListActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_shopping_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -111,6 +116,7 @@ public class ShoppingListActivity extends AppCompatActivity
         //foto sopra al menù laterale
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().findItem(R.id.shop_list_menu).setChecked(true);
 
         RadioButton recipeButton = (RadioButton) findViewById(R.id.shopping_list_recipe);
         RadioButton aisleButton = (RadioButton) findViewById(R.id.shopping_list_aisle);
@@ -156,6 +162,10 @@ public class ShoppingListActivity extends AppCompatActivity
         if(task == null){
             task = new RetrieveIngredientsFromDBTask();
             task.execute(this);
+        }
+
+        if(!mDualPane && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            toolbar.setTitleTextColor(getResources().getColor(R.color.orange));
         }
 
     }
@@ -216,6 +226,9 @@ public class ShoppingListActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.shopping_list_menu, menu);
+        if(!mDualPane && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            ((Toolbar) findViewById(R.id.toolbar)).setOverflowIcon(getResources().getDrawable(R.drawable.ic_overflow_dark));
+        }
         return true;
     }
 
@@ -322,7 +335,9 @@ public class ShoppingListActivity extends AppCompatActivity
         DeleteShoppingList task = new DeleteShoppingList(ConstantsDictionary.ALL, 0);
         task.execute(this);
 
-        aisleParent.removeAllViews();
+        if(aisleParent.getAdapter() != null){
+            ((ShoppingListSectionAdapter) aisleParent.getAdapter()).removeAll();
+        }
         gotItAdapter.removeAll();
     }
 

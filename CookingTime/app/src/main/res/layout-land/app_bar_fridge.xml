@@ -18,8 +18,7 @@
             android:layout_height="?android:attr/actionBarSize"
             android:background="@color/white"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/fridge_label"
-            app:titleTextAppearance="@style/ActionBarTitle" />
+            app:title="@string/fridge_label" />
 
     </android.support.design.widget.AppBarLayout>
 

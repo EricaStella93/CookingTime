@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -25,6 +26,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.erica.cookingtime.Adapters.RecipeFrontAdapter;
 import com.example.erica.cookingtime.Fragments.OnFragmentInteractionListener;
 import com.example.erica.cookingtime.Fragments.RecipeListFragment;
 import com.example.erica.cookingtime.Fragments.SingleRecipeFragment;
@@ -39,11 +41,16 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
+
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         OnFragmentInteractionListener,
         SupportFragment.ActivityCoordinator,
-        SingleRecipeFragment.SingleRecipeListener{
+        SingleRecipeFragment.SingleRecipeListener,
+        RecipeFrontAdapter.OnChangeFavs
+{
 
     private final String STATE_QUERY = "state_query";
 
@@ -63,6 +70,8 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
+
         setContentView(R.layout.activity_home);
 
         setupToolBar();
@@ -125,7 +134,11 @@ public class HomeActivity extends AppCompatActivity
 
         //schermo grande
         if(mDualePane){
-            recipeListFragment = RecipeListFragment.newInstance(4);
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                recipeListFragment = RecipeListFragment.newInstance(4);
+            }else {
+                recipeListFragment = RecipeListFragment.newInstance(3);
+            }
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.recipe_fragment_container, recipeListFragment);
@@ -154,11 +167,16 @@ public class HomeActivity extends AppCompatActivity
     private void setupWithSelRec(Match selRec){
         FragmentManager fragmentManager = getFragmentManager();
         findViewById(R.id.recipe_list_progress_bar).setVisibility(View.GONE);
+        findViewById(R.id.recipe_fragment_container).setVisibility(View.VISIBLE);
 
         //schermo grande e ricetta aperta
         if(mDualePane){
-
-            recipeListFragment = RecipeListFragment.newInstance(2);
+            findViewById(R.id.single_recipe_fragment_frame).setVisibility(View.VISIBLE);
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                recipeListFragment = RecipeListFragment.newInstance(2);
+            }else {
+                recipeListFragment = RecipeListFragment.newInstance(1);
+            }
             singleRecipeFragment = SingleRecipeFragment.newInstance(false);
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -252,12 +270,12 @@ public class HomeActivity extends AppCompatActivity
             startActivity(intent);
             return true;
         }
-        if(id == R.id.share_recipe){
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, supportFragment.getSelectedRecipe().getDetailedRecipe().sourceUrl);
+        if(id == R.id.action_share_recipe){
+            Intent sendIntent = new Intent(Intent.ACTION_SEND);
             sendIntent.setType("text/plain");
-            startActivity(sendIntent);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, supportFragment.getSelectedRecipe().getDetailedRecipe().sourceUrl);
+            Intent chooser = Intent.createChooser(sendIntent, getResources().getString(R.string.share_using));
+            startActivity(chooser);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -334,7 +352,7 @@ public class HomeActivity extends AppCompatActivity
         if(initialQuery != null){
             sv.setIconified(false);
             search.expandActionView();
-            sv.setQuery(initialQuery,true);
+            sv.setQuery(initialQuery, false);
         }
     }
 
@@ -343,7 +361,10 @@ public class HomeActivity extends AppCompatActivity
         super.onSaveInstanceState(state);
         if(sv != null){
             if(!sv.isIconified()) {
-                state.putCharSequence(STATE_QUERY, sv.getQuery());
+                if(!sv.getQuery().toString().trim().equals("")){
+                    state.putCharSequence(STATE_QUERY, sv.getQuery());
+                }
+
             }
         }
     }
@@ -386,7 +407,11 @@ public class HomeActivity extends AppCompatActivity
         findViewById(R.id.recipe_fragment_container).setVisibility(View.VISIBLE);
         int columns = 1;
         if(mDualePane){
-            columns = 4;
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                columns = 4;
+            }else {
+                columns = 3;
+            }
         }else{
             if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
                 columns = 2;
@@ -420,8 +445,15 @@ public class HomeActivity extends AppCompatActivity
 
         //schermo grande
         if(mDualePane){
+            int columns = 1;
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                columns = 2;
+            }else {
+                columns = 1;
+            }
+            findViewById(R.id.single_recipe_fragment_frame).setVisibility(View.VISIBLE);
             singleRecipeFragment = SingleRecipeFragment.newInstance(false);
-            recipeListFragment.changeGridColumns(2, this);
+            recipeListFragment.changeGridColumns(columns, this);
             fragmentTransaction.replace(R.id.single_recipe_fragment_frame, singleRecipeFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
@@ -456,6 +488,7 @@ public class HomeActivity extends AppCompatActivity
 
         //schermo grande
         if(mDualePane){
+            findViewById(R.id.single_recipe_fragment_frame).setVisibility(View.GONE);
             recipeListFragment.changeGridColumns(4, this);
             fragmentTransaction.remove(singleRecipeFragment);
             fragmentTransaction.commit();
@@ -540,7 +573,7 @@ public class HomeActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_collaps);
         setSupportActionBar(toolbar);
-        setTitle(recipe.getRecipeName());
+        ((CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar)).setTitle(recipe.getRecipeName());
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(getResources().getDrawable(R.drawable.ic_left_arrow_white));
@@ -571,5 +604,15 @@ public class HomeActivity extends AppCompatActivity
 
         setupToolBar();
 
+    }
+
+    @Override
+    public void addFav(String id) {
+        supportFragment.addFav(id);
+    }
+
+    @Override
+    public void removeFav(String id) {
+        supportFragment.removeFav(id);
     }
 }

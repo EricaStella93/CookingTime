@@ -101,7 +101,7 @@ public class InclIngrFilterFragment extends Fragment implements FridgeContentAda
         layout.findViewById(R.id.back_to_filters_incl_ingr).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onCloseFilterFragment(FilterSupportFragment.CUISINE_OPEN);
+                mListener.onCloseFilterFragment(FilterSupportFragment.INCL_INGR_OPEN);
             }
         });
         ingredientsRecView = (RecyclerView) layout.findViewById(R.id.incl_ingr_rec_view);

@@ -47,7 +47,8 @@ public class ShoppingListSectionAdapter extends RecyclerView.Adapter<ShoppingLis
     }
 
     public void removeAll() {
-        for(ShoppingListSection section: sections){
+        ArrayList<ShoppingListSection> newSections = new ArrayList<>(sections);
+        for(ShoppingListSection section: newSections){
             int index = sections.indexOf(section);
             remove(index);
         }

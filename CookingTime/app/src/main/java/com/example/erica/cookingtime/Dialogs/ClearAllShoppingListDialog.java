@@ -50,6 +50,7 @@ public class ClearAllShoppingListDialog extends DialogFragment {
         @Override
         public void onClick(View v) {
             mListener.onClearAllChoice();
+            dialog.dismiss();
         }
     });
 

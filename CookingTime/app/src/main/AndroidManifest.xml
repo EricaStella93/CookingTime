@@ -52,6 +52,11 @@
 
         <receiver android:name=".Notifications.NotificationReceiver"/>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="eb039f7a64d462f3b934ade4aa48fe0db1ae0cb2"
+            />
+
     </application>
 
 </manifest>

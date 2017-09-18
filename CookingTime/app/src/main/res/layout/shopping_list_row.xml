@@ -44,16 +44,16 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|center_horizontal"
         android:orientation="vertical">
 
         <CheckBox
             android:id="@+id/got_it"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:buttonTint="@color/checkbox_tint"
             android:checked="false"
-            android:textColorLink="@color/orange"
-            android:buttonTint="@color/checkbox_tint" />
+            android:textColorLink="@color/orange" />
 
     </LinearLayout>
 

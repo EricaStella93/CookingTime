@@ -17,8 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             android:background="@color/white"
-            app:title="@string/shopping_list_label"
-            app:titleTextAppearance="@style/ActionBarTitle" />
+            app:title="@string/shopping_list_label" />
 
     </android.support.design.widget.AppBarLayout>
 

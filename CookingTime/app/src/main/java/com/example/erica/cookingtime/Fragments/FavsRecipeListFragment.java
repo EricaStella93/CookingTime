@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 
 import com.example.erica.cookingtime.Adapters.FavsRecipeFrontAdapter;
+import com.example.erica.cookingtime.Adapters.RecipeFrontAdapter;
 import com.example.erica.cookingtime.POJO.Match;
 import com.example.erica.cookingtime.R;
 import com.example.erica.cookingtime.Utils.SearchViewStyle;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 public class FavsRecipeListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private RecipeFrontAdapter.OnChangeFavs favListener;
     private ArrayList<Match> recipeList = new ArrayList<>();
 
     private RecyclerView recipeRecView;
@@ -83,6 +85,8 @@ public class FavsRecipeListFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+
+        favListener = (RecipeFrontAdapter.OnChangeFavs) context;
     }
 
     @Override
@@ -97,7 +101,7 @@ public class FavsRecipeListFragment extends Fragment {
         }
         layMan = new GridLayoutManager(recipeRecView.getContext(), gridColumns);
         recipeRecView.setLayoutManager(layMan);
-        adapter = new FavsRecipeFrontAdapter(recipeList, this);
+        adapter = new FavsRecipeFrontAdapter(recipeList, this, favListener);
         recipeRecView.setAdapter(adapter);
 
         if(savedInstanceState == null){
@@ -183,7 +187,7 @@ public class FavsRecipeListFragment extends Fragment {
             if(!initialQuery.equals("")){
                 sv.setIconified(false);
                 search.expandActionView();
-                sv.setQuery(initialQuery,true);
+                sv.setQuery(initialQuery, false);
             }
         }
     }

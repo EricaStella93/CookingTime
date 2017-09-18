@@ -26,12 +26,14 @@ public class FavsRecipeFrontAdapter extends RecyclerView.Adapter<FavsRecipeFront
     private ArrayList<Match> mDatasetFilter;
     private FavsRecipeListFragment fragment;
     private RecipeFilter filter;
+    private RecipeFrontAdapter.OnChangeFavs mListener;
 
-    public FavsRecipeFrontAdapter(ArrayList<Match> list, FavsRecipeListFragment fragment){
+    public FavsRecipeFrontAdapter(ArrayList<Match> list, FavsRecipeListFragment fragment, RecipeFrontAdapter.OnChangeFavs listener){
         recipes = list;
         mDatasetFilter = list;
         this.fragment = fragment;
         filter = new RecipeFilter(recipes, this);
+        this.mListener = listener;
     }
 
     public void add(int position, Match item) {
@@ -42,6 +44,18 @@ public class FavsRecipeFrontAdapter extends RecyclerView.Adapter<FavsRecipeFront
     public void remove(int position) {
         recipes.remove(position);
         notifyItemRemoved(position);
+    }
+
+    /*public void remove(Match recipe){
+        int index = recipes.indexOf(recipe);
+        remove(index);
+    }*/
+
+    public void removeFromFiltered(Match recipe){
+        int index = mDatasetFilter.indexOf(recipe);
+        mDatasetFilter.remove(index);
+        notifyItemRemoved(index);
+        recipes.remove(recipe);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -109,7 +123,8 @@ public class FavsRecipeFrontAdapter extends RecyclerView.Adapter<FavsRecipeFront
             public void onClick(View view) {
                 FavsModifier task = new FavsModifier(ConstantsDictionary.REMOVE, match.getId(), null);
                 task.execute(view.getContext());
-                remove(position);
+                removeFromFiltered(match);
+                mListener.removeFav(match.getId());
                 //TODO aggiungere toast con undo?
             }
         });

@@ -51,6 +51,18 @@ public class SupportFavsFragment extends Fragment {
 
     public SupportFavsFragment(){}
 
+    public void addFav(String id){
+        if(favList != null){
+            favList.add(id);
+        }
+    }
+
+    public void removeFav(String id){
+        if(favList != null){
+            favList.remove(id);
+        }
+    }
+
     public static SupportFavsFragment newInstance(){
         return new SupportFavsFragment();
     }

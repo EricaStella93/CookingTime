@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.database.SQLException;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.erica.cookingtime.Adapters.RecipeFrontAdapter;
 import com.example.erica.cookingtime.DataBase.DataSources.FilterDataSource;
 import com.example.erica.cookingtime.Dialogs.AddIncludedIngrDialog;
 import com.example.erica.cookingtime.Dialogs.ResetCoursesDialog;
@@ -56,6 +58,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
+
 
 public class SearchActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -67,7 +72,8 @@ public class SearchActivity extends AppCompatActivity
         ResetCoursesDialog.ResetCoursesListener,
         AddIncludedIngrDialog.AddInclIngredientDialogListener,
         ResetFiltersDialog.ResetFilterListener,
-        InclIngrFilterFragment.OnIncludedIngredients {
+        InclIngrFilterFragment.OnIncludedIngredients,
+        RecipeFrontAdapter.OnChangeFavs{
 
     private boolean mDualPane;
 
@@ -89,6 +95,8 @@ public class SearchActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
+
         setContentView(R.layout.activity_search);
 
         setupToolbar();
@@ -159,20 +167,6 @@ public class SearchActivity extends AppCompatActivity
 
             if(supportFragment.isFilterOpen()){
                 filter = supportFragment.filterToOpen();
-                /*if(filter instanceof FridgeContentFragment){
-                    fridgeFragment = (FridgeContentFragment) filter;
-                    filter = supportFragment.filterToOpen(FilterSupportFragment.INCL_INGR_OPEN);
-
-                    fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.second_fragment_frame, filter);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-
-                    fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.second_fragment_frame, fridgeFragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                }*/
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.second_fragment_frame, filter);
                 fragmentTransaction.addToBackStack(null);
@@ -192,20 +186,6 @@ public class SearchActivity extends AppCompatActivity
 
             if(supportFragment.isFilterOpen()){
                 filter = supportFragment.filterToOpen();
-                /*if(filter instanceof FridgeContentFragment){
-                    fridgeFragment = (FridgeContentFragment) filter;
-                    filter = supportFragment.filterToOpen(FilterSupportFragment.INCL_INGR_OPEN);
-
-                    fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.first_fragment_frame, filter);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-
-                    fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.first_fragment_frame, fridgeFragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                }*/
                 fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.first_fragment_frame, filter);
                 fragmentTransaction.addToBackStack(null);
@@ -219,8 +199,13 @@ public class SearchActivity extends AppCompatActivity
 
     private void setupWithOpenRighePanel(FragmentManager fragmentManager){
         if(mDualPane){
-            setupRecipeList(2, fragmentManager);
-            return;
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                setupRecipeList(2, fragmentManager);
+                return;
+            }else{
+                setupRecipeList(1, fragmentManager);
+                return;
+            }
         }else{
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 setupRecipeList(2, fragmentManager);
@@ -234,7 +219,11 @@ public class SearchActivity extends AppCompatActivity
 
     private void setupWithOnlyRecipeList(FragmentManager fragmentManager){
         if(mDualPane){
-            setupRecipeList(4, fragmentManager);
+            int columns = 3;
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                columns = 4;
+            }
+            setupRecipeList(columns, fragmentManager);
             return;
         }else{
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -252,7 +241,7 @@ public class SearchActivity extends AppCompatActivity
             findViewById(R.id.second_fragment_frame).setVisibility(View.VISIBLE);
             singleRecipeFragment = SingleRecipeFragment.newInstance(false);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(R.id.second_fragment_frame, recipeListFragment);
+            fragmentTransaction.replace(R.id.second_fragment_frame, singleRecipeFragment);
             fragmentTransaction.commit();
         }else {
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -324,7 +313,9 @@ public class SearchActivity extends AppCompatActivity
 
     private void openFilters(){
         FragmentManager fragmentManager = getFragmentManager();
+        supportFragment.removeSelectedRecipe();
         supportFragment.openFilterPage();
+
         if(mDualPane){
             if(recipeListFragment!= null){
                 recipeListFragment.changeGridColumns(2, this);
@@ -446,7 +437,7 @@ public class SearchActivity extends AppCompatActivity
         if(initialQuery != null){
             sv.setIconified(false);
             search.expandActionView();
-            sv.setQuery(initialQuery,true);
+            sv.setQuery(initialQuery, false);
         }
     }
 
@@ -455,7 +446,9 @@ public class SearchActivity extends AppCompatActivity
         super.onSaveInstanceState(state);
         if(sv != null){
             if(!sv.isIconified()) {
-                state.putCharSequence(STATE_QUERY, sv.getQuery());
+                if(!sv.getQuery().toString().trim().equals("")){
+                    state.putCharSequence(STATE_QUERY, sv.getQuery());
+                }
             }
         }
     }
@@ -475,12 +468,11 @@ public class SearchActivity extends AppCompatActivity
             onFiltersExit();
             return true;
         }
-        if(id == R.id.share_recipe){
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, supportFragment.getSelectedRecipe().getDetailedRecipe().sourceUrl);
+        if(id == R.id.action_share_recipe){
+            Intent sendIntent = new Intent(android.content.Intent.ACTION_SEND);
             sendIntent.setType("text/plain");
-            startActivity(sendIntent);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, supportFragment.getSelectedRecipe().getDetailedRecipe().sourceUrl);
+            startActivity(Intent.createChooser(sendIntent, getResources().getString(R.string.share_using)));
         }
 
         return super.onOptionsItemSelected(item);
@@ -510,6 +502,7 @@ public class SearchActivity extends AppCompatActivity
             fragmentTransaction.remove(filtersFragment);
             fragmentTransaction.commit();
             if(recipeListFragment == null){
+                findViewById(R.id.recipe_list_progress_bar).setVisibility(View.GONE);
                 setupWithOnlyRecipeList(fragmentManager);
             }else{
                 recipeListFragment.changeGridColumns(4, this);
@@ -521,6 +514,7 @@ public class SearchActivity extends AppCompatActivity
             fragmentManager.popBackStack();
             resetNormalToolbar();
             if(recipeListFragment == null){
+                findViewById(R.id.recipe_list_progress_bar).setVisibility(View.GONE);
                 setupWithOnlyRecipeList(fragmentManager);
             }
         }
@@ -532,10 +526,19 @@ public class SearchActivity extends AppCompatActivity
 
     @Override
     public void onFiltersOpen(String filterToOpen) {
+        findViewById(R.id.recipe_list_progress_bar).setVisibility(View.GONE);
         filter = supportFragment.filterToOpen(filterToOpen);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if(mDualPane){
+            int columns = 1;
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                columns = 2;
+            }
+            if(recipeListFragment != null){
+                recipeListFragment.changeGridColumns(columns, this);
+            }
+            findViewById(R.id.second_fragment_frame).setVisibility(View.VISIBLE);
             fragmentTransaction.replace(R.id.second_fragment_frame, filter);
         }else{
             fragmentTransaction.replace(R.id.first_fragment_frame, filter);
@@ -615,6 +618,16 @@ public class SearchActivity extends AppCompatActivity
 
     @Override
     public void onRecipeDetailReceived() {
+        supportFragment.closeFilterPage();
+        if(mDualPane){
+            int columns = 1;
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                columns = 2;
+            }else {
+                columns = 1;
+            }
+            recipeListFragment.changeGridColumns(columns, this);
+        }
         setupOpenRecipe(getFragmentManager(), supportFragment.getSelectedRecipe());
     }
 
@@ -630,10 +643,16 @@ public class SearchActivity extends AppCompatActivity
 
         //schermo grande
         if(mDualPane){
-            findViewById(R.id.second_fragment_frame).setVisibility(View.GONE);
             fragmentTransaction.remove(singleRecipeFragment);
             fragmentTransaction.commit();
-            recipeListFragment.changeGridColumns(4, this);
+            findViewById(R.id.second_fragment_frame).setVisibility(View.GONE);
+            int columns = 1;
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                columns = 4;
+            }else {
+                columns = 3;
+            }
+            recipeListFragment.changeGridColumns(columns, this);
             supportFragment.removeSelectedRecipe();
         }else{
             fragmentManager.popBackStack();
@@ -713,7 +732,8 @@ public class SearchActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_collaps);
         setSupportActionBar(toolbar);
 
-        toolbar.setTitle(recipe.getRecipeName());
+        ((CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar)).setTitle(recipe.getRecipeName());
+
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -793,6 +813,16 @@ public class SearchActivity extends AppCompatActivity
     public void onAddIngredient(String name) {
         AddIncludedIngrTask task = new AddIncludedIngrTask(name);
         task.execute(this);
+    }
+
+    @Override
+    public void addFav(String id) {
+        supportFragment.addFav(id);
+    }
+
+    @Override
+    public void removeFav(String id) {
+        supportFragment.removeFav(id);
     }
 
     @Override

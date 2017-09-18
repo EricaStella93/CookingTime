@@ -87,6 +87,7 @@ public class SupportFragment extends Fragment {
         APISpoonCall.enqueue(new Callback<SpoonacularExctractedRecipe>() {
             @Override
             public void onResponse(Call<SpoonacularExctractedRecipe> call, Response<SpoonacularExctractedRecipe> response) {
+
                 recipe.setDetailedRecipe(response.body());
                 selectedRecipe = recipe;
                 mListener.onRecipeDetailReceived();
@@ -159,6 +160,20 @@ public class SupportFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void addFav(String id){
+        if(favList != null){
+            favList.add(id);
+        }
+    }
+
+    public void removeFav(String id){
+
+        if(favList != null){
+            favList.remove(id);
+        }
+
     }
 
     private void callAPI(){

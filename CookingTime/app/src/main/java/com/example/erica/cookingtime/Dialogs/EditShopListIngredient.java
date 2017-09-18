@@ -86,7 +86,7 @@ public class EditShopListIngredient extends DialogFragment{
                 R.array.udm_array, android.R.layout.simple_spinner_item);
         udmAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         udmSpinner.setAdapter(udmAdapter);
-        //TODO selezionare quello dell'ing
+        udmSpinner.setSelection(udmAdapter.getPosition(ingredient.getUdm()));
 
         layout.findViewById(R.id.save_changes).setOnClickListener(new View.OnClickListener() {
             @Override

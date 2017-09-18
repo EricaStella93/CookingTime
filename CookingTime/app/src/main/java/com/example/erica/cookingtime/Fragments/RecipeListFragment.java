@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class RecipeListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private RecipeFrontAdapter.OnChangeFavs favListener;
     private ArrayList<Match> recipeList = new ArrayList<>();
     private ArrayList<String> favList = new ArrayList<>();
 
@@ -74,6 +75,8 @@ public class RecipeListFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+
+        favListener = (RecipeFrontAdapter.OnChangeFavs) context;
     }
 
     @Override
@@ -94,7 +97,7 @@ public class RecipeListFragment extends Fragment {
         }
         layMan = new GridLayoutManager(recipeRecView.getContext(), gridColumns);
         recipeRecView.setLayoutManager(layMan);
-        adapter = new RecipeFrontAdapter(recipeList, this, favList);
+        adapter = new RecipeFrontAdapter(recipeList, this, favList, favListener);
         recipeRecView.setAdapter(adapter);
     }
 

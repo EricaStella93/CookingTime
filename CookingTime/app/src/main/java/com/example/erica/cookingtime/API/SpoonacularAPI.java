@@ -11,7 +11,7 @@ public interface SpoonacularAPI {
 
     static final String BASE_URL = "https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/";
 
-    @Headers({"X-Mashape-Key: hdf1pL9N0qmshJgVa9o1O0IS9imKp1v2P4Xjsn4COdcesI2f62",
+    @Headers({"X-Mashape-Key: va227dnbk2mshwaLUGdoa58LWUD8p1UbWo7jsn68u1owEnG4ub",
             "Accept: application/json"})
     @GET("recipes/extract")
     Call<SpoonacularExctractedRecipe> getRecipe(

@@ -3,8 +3,10 @@ package com.example.erica.cookingtime.Fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,6 +27,7 @@ public class CuisineFilterFragment extends Fragment {
     private ArrayList<Cuisine> cuisines;
 
     private RecyclerView cuisineRecView;
+    private View dualPane;
 
     private OnCloseFilterFragment mListener;
 
@@ -72,7 +75,7 @@ public class CuisineFilterFragment extends Fragment {
                 dialog.show(((AppCompatActivity)getActivity()).getSupportFragmentManager(), "reset_filter");
             }
         });
-
+        dualPane = layout.findViewById(R.id.second_stub);
         cuisineRecView = (RecyclerView) layout.findViewById(R.id.cuisines_rec_view);
         if(cuisines != null){
             setCuisineRecView();
@@ -84,7 +87,18 @@ public class CuisineFilterFragment extends Fragment {
         if(cuisineRecView == null){
             return;
         }
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(cuisineRecView.getContext());
+        RecyclerView.LayoutManager layoutManager;
+        if(dualPane == null){
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                layoutManager = new GridLayoutManager(cuisineRecView.getContext(), 4);
+            }else{
+                layoutManager = new GridLayoutManager(cuisineRecView.getContext(), 2);
+            }
+        }else{
+            layoutManager = new GridLayoutManager(cuisineRecView.getContext(), 2);
+
+        }
+
         cuisineRecView.setLayoutManager(layoutManager);
         CuisineAdapter adapter = new CuisineAdapter(cuisines);
         cuisineRecView.setAdapter(adapter);

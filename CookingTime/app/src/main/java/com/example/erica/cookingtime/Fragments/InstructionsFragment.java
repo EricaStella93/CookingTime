@@ -51,13 +51,15 @@ public class InstructionsFragment extends Fragment {
         recyclerView = (RecyclerView) layout.findViewById(R.id.instr_rec_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(layout.getContext());
         recyclerView.setLayoutManager(layoutManager);
-        String[] spli = instructions.split("\\.");
-        ArrayList<String> instr = new ArrayList<>();
-        for(String spl : spli){
-            instr.add(spl);
+        if(instructions != null){
+            String[] spli = instructions.split("\\.");
+            ArrayList<String> instr = new ArrayList<>();
+            for(String spl : spli){
+                instr.add(spl.trim());
+            }
+            InstructionsAdapter adapter = new InstructionsAdapter(instr);
+            recyclerView.setAdapter(adapter);
         }
-        InstructionsAdapter adapter = new InstructionsAdapter(instr);
-        recyclerView.setAdapter(adapter);
         return layout;
     }
 }

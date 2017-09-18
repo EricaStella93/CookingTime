@@ -9,11 +9,33 @@
         android:id="@+id/button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/recipe_image"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:background="@color/orange"/>
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/recipe_image"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="@color/orange"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:alpha="0.4"
+                android:background="@color/black" />
+
+            <TextView
+                android:id="@+id/recipe_name_hid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:fontFamily="sans-serif-thin"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:text="blaaaa"
+                android:textColor="@color/white"
+                android:textSize="36sp" />
+        </FrameLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,7 +48,7 @@
                 android:layout_gravity="left"
                 android:background="@android:color/transparent"
                 android:padding="10dp"
-                android:src="@drawable/ic_left_arrow_no_handle_white" />
+                android:src="@drawable/ic_left_arrow_white" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:padding="10dp"
-                    android:src="@drawable/ic_left_arrow_no_handle_white" />
+                    android:src="@drawable/ic_share" />
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

@@ -31,6 +31,9 @@ import com.example.erica.cookingtime.Utils.MenuUtils;
 
 import java.util.ArrayList;
 
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
+
 
 public class DietaryPreferencesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AddDislikedIngredientDialog.AddDislIngredientDialogListener {
@@ -56,6 +59,8 @@ public class DietaryPreferencesActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Fabric.with(this, new Crashlytics());
 
         setContentView(R.layout.activity_diet_pref);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -95,6 +100,7 @@ public class DietaryPreferencesActivity extends AppCompatActivity
         //foto sopra al menù laterale
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().findItem(R.id.diet_pref_menu).setChecked(true);
 
         setDietRecyclerViews();
         setAllergyRecyclerViews();
